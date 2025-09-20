@@ -1,4 +1,10 @@
-import { model, Schema } from "mongoose";
+import { Document, model, Schema } from "mongoose";
+
+export interface IFoodPartner extends Document {
+    name: string;
+    email: string;
+    password: string;
+}
 
 const foodPartnerSchema = new Schema({
     name: {

@@ -1,9 +1,14 @@
-import { Schema } from "mongoose";
+import { Document, Schema } from "mongoose";
+export interface IFoodPartner extends Document {
+    name: string;
+    email: string;
+    password: string;
+}
 export declare const foodPartnerModel: import("mongoose").Model<{
     name: string;
     email: string;
     password: string;
-}, {}, {}, {}, import("mongoose").Document<unknown, {}, {
+}, {}, {}, {}, Document<unknown, {}, {
     name: string;
     email: string;
     password: string;
@@ -19,7 +24,7 @@ export declare const foodPartnerModel: import("mongoose").Model<{
     name: string;
     email: string;
     password: string;
-}, import("mongoose").Document<unknown, {}, import("mongoose").FlatRecord<{
+}, Document<unknown, {}, import("mongoose").FlatRecord<{
     name: string;
     email: string;
     password: string;

@@ -1,4 +1,9 @@
-import { Schema } from "mongoose";
+import { Document, Schema } from "mongoose";
+export interface IUser extends Document {
+    fullName: string;
+    email: string;
+    password: string;
+}
 export declare const userModel: import("mongoose").Model<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
@@ -6,7 +11,7 @@ export declare const userModel: import("mongoose").Model<{
     fullName: string;
     email: string;
     password: string;
-}, {}, {}, {}, import("mongoose").Document<unknown, {}, {
+}, {}, {}, {}, Document<unknown, {}, {
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
@@ -35,7 +40,7 @@ export declare const userModel: import("mongoose").Model<{
     fullName: string;
     email: string;
     password: string;
-}, import("mongoose").Document<unknown, {}, import("mongoose").FlatRecord<{
+}, Document<unknown, {}, import("mongoose").FlatRecord<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {

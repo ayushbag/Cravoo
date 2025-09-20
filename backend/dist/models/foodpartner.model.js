@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose";
+import { Document, model, Schema } from "mongoose";
 const foodPartnerSchema = new Schema({
     name: {
         type: String,
