@@ -4,18 +4,21 @@ import { userModel } from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import { foodPartnerModel } from "../models/foodpartner.model.js";
 // zod schema for register request body
-const registerBodySchema = z.object({
+const userRegisterBodySchema = z.object({
     fullName: z.string().min(1, "Name is required"),
     email: z.email("Invalid email address"),
     password: z.string().min(8, "Password must contain at least 8 characters").regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).+$/, "Password must contain uppercase, lowercase, number, and special character")
 });
 // zod schema for login request body
-const loginBodySchema = z.object({
+const userLoginBodySchema = z.object({
     email: z.email("Invalid email address"),
     password: z.string()
 });
 const foodPartnerRegisterSchema = z.object({
     name: z.string().min(1, "Name is required field"),
+    contactName: z.string().min(1, "Contact name is required field"),
+    phone: z.string().min(1, "Phone number is required field"),
+    address: z.string().min(1, "Address is required field"),
     email: z.email("Invalid email address"),
     password: z.string().min(8, "Password must contain at least 8 characters").regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).+$/, "Password must contain uppercase, lowercase, number, and special character")
 });
@@ -25,7 +28,7 @@ const foodPartnerLoginSchema = z.object({
 });
 export const registerUser = async (req, res) => {
     // zod validation of request body
-    const parsedBody = registerBodySchema.safeParse(req.body);
+    const parsedBody = userRegisterBodySchema.safeParse(req.body);
     if (!parsedBody.success) {
         return res.status(400).json({
             message: "Invalid request body",
@@ -77,7 +80,7 @@ export const registerUser = async (req, res) => {
 };
 export const loginUser = async (req, res) => {
     // zod validation of request body
-    const parsedBody = loginBodySchema.safeParse(req.body);
+    const parsedBody = userLoginBodySchema.safeParse(req.body);
     if (!parsedBody.success) {
         return res.status(400).json({
             message: "Invalid request body",
@@ -136,7 +139,7 @@ export const registerFoodPartner = async (req, res) => {
             errors: parsedBody.error.issues[0]?.message
         });
     }
-    const { name, email, password } = parsedBody.data;
+    const { name, email, password, phone, address, contactName } = parsedBody.data;
     try {
         const isAccountAlreadyExists = await foodPartnerModel.findOne({
             email
@@ -150,7 +153,10 @@ export const registerFoodPartner = async (req, res) => {
         const foodPartner = await foodPartnerModel.create({
             name,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            phone,
+            address,
+            contactName
         });
         const JWT_SECRET = process.env.JWT_SECRET;
         const token = await jwt.sign({
@@ -163,6 +169,9 @@ export const registerFoodPartner = async (req, res) => {
                 id: foodPartner._id,
                 name: foodPartner.name,
                 email: foodPartner.email,
+                address: foodPartner.address,
+                contactName: foodPartner.contactName,
+                phone: foodPartner.phone
             }
         });
     }
@@ -174,7 +183,7 @@ export const registerFoodPartner = async (req, res) => {
     }
 };
 export const loginFoodPartner = async (req, res) => {
-    const parsedBody = loginBodySchema.safeParse(req.body);
+    const parsedBody = foodPartnerLoginSchema.safeParse(req.body);
     if (!parsedBody.success) {
         return res.status(400).json({
             message: "Invalid request body",
@@ -207,7 +216,7 @@ export const loginFoodPartner = async (req, res) => {
             user: {
                 _id: foodPartner._id,
                 email: foodPartner.email,
-                fullName: foodPartner.name
+                name: foodPartner.name
             }
         });
     }

@@ -1,18 +1,21 @@
 import type { Request, Response } from "express";
 import z from "zod";
-declare const registerBodySchema: z.ZodObject<{
+declare const userRegisterBodySchema: z.ZodObject<{
     fullName: z.ZodString;
     email: z.ZodEmail;
     password: z.ZodString;
 }, z.z.core.$strip>;
-type UserRegisterBody = z.infer<typeof registerBodySchema>;
-declare const loginBodySchema: z.ZodObject<{
+type UserRegisterBody = z.infer<typeof userRegisterBodySchema>;
+declare const userLoginBodySchema: z.ZodObject<{
     email: z.ZodEmail;
     password: z.ZodString;
 }, z.z.core.$strip>;
-type UserLoginBody = z.infer<typeof loginBodySchema>;
+type UserLoginBody = z.infer<typeof userLoginBodySchema>;
 declare const foodPartnerRegisterSchema: z.ZodObject<{
     name: z.ZodString;
+    contactName: z.ZodString;
+    phone: z.ZodString;
+    address: z.ZodString;
     email: z.ZodEmail;
     password: z.ZodString;
 }, z.z.core.$strip>;

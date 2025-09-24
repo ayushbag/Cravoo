@@ -12,7 +12,7 @@ export const authContent = {
     foodPartner: {
         login: {
             title: "Welcome Back",
-            desc: "Sign in to manage your menu, reels, and orders."
+            desc: "Sign in to quickly update your menu, post reels, and track incoming orders."
         },
         register: {
             title: "Join Us",

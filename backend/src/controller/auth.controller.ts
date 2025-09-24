@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken"
 import { foodPartnerModel } from "../models/foodpartner.model.js";
 
 // zod schema for register request body
-const registerBodySchema = z.object({
+const userRegisterBodySchema = z.object({
     fullName: z.string().min(1, "Name is required"),
     email: z.email("Invalid email address"),
     password: z.string().min(8, "Password must contain at least 8 characters").regex(
@@ -15,26 +15,23 @@ const registerBodySchema = z.object({
     )
 })
 
-// interface RegisterBody {
-//     fullName: string;
-//     email: string;
-//     password: string
-// }
-
 // infer types from zod schema
-type UserRegisterBody = z.infer<typeof registerBodySchema>;
+type UserRegisterBody = z.infer<typeof userRegisterBodySchema>;
 
 // zod schema for login request body
-const loginBodySchema = z.object({
+const userLoginBodySchema = z.object({
     email: z.email("Invalid email address"),
     password: z.string()
 })
 
 // infer types from zod schema
-type UserLoginBody = z.infer<typeof loginBodySchema>;
+type UserLoginBody = z.infer<typeof userLoginBodySchema>;
 
 const foodPartnerRegisterSchema = z.object({
     name: z.string().min(1, "Name is required field"),
+    contactName: z.string().min(1, "Contact name is required field"),
+    phone: z.string().min(1, "Phone number is required field"),
+    address: z.string().min(1, "Address is required field"),
     email: z.email("Invalid email address"),
     password: z.string().min(8, "Password must contain at least 8 characters").regex(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).+$/,
@@ -54,7 +51,7 @@ type FoodPartnerLogin = z.infer<typeof foodPartnerLoginSchema>
 export const registerUser = async (req: Request<{}, {}, UserRegisterBody>, res: Response) => {
 
     // zod validation of request body
-    const parsedBody = registerBodySchema.safeParse(req.body);
+    const parsedBody = userRegisterBodySchema.safeParse(req.body);
 
     if (!parsedBody.success) {
         return res.status(400).json({
@@ -117,7 +114,7 @@ export const registerUser = async (req: Request<{}, {}, UserRegisterBody>, res: 
 export const loginUser = async (req: Request<{}, {}, UserLoginBody>, res: Response) => {
 
     // zod validation of request body
-    const parsedBody = loginBodySchema.safeParse(req.body);
+    const parsedBody = userLoginBodySchema.safeParse(req.body);
 
     if (!parsedBody.success) {
         return res.status(400).json({
@@ -190,7 +187,7 @@ export const registerFoodPartner = async (req: Request<{}, {}, FoodPartnerRegist
         })
     }
 
-    const { name, email, password } = parsedBody.data;
+    const { name, email, password, phone, address,contactName } = parsedBody.data;
 
     try {
         const isAccountAlreadyExists = await foodPartnerModel.findOne({
@@ -208,7 +205,10 @@ export const registerFoodPartner = async (req: Request<{}, {}, FoodPartnerRegist
         const foodPartner = await foodPartnerModel.create({
             name,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            phone,
+            address, 
+            contactName
         })
 
         const JWT_SECRET = process.env.JWT_SECRET as string;
@@ -225,6 +225,9 @@ export const registerFoodPartner = async (req: Request<{}, {}, FoodPartnerRegist
                 id: foodPartner._id,
                 name: foodPartner.name,
                 email: foodPartner.email,
+                address: foodPartner.address,
+                contactName: foodPartner.contactName,
+                phone: foodPartner.phone
             }
         })
     } catch (error) {
@@ -237,7 +240,7 @@ export const registerFoodPartner = async (req: Request<{}, {}, FoodPartnerRegist
 
 export const loginFoodPartner = async (req: Request<{}, {}, FoodPartnerLogin>, res: Response) => {
 
-    const parsedBody = loginBodySchema.safeParse(req.body);
+    const parsedBody = foodPartnerLoginSchema.safeParse(req.body);
 
     if(!parsedBody.success) {
         return res.status(400).json({
@@ -280,7 +283,7 @@ export const loginFoodPartner = async (req: Request<{}, {}, FoodPartnerLogin>, r
             user: {
                 _id: foodPartner._id,
                 email: foodPartner.email,
-                fullName: foodPartner.name
+                name: foodPartner.name
             }
         })
     } catch (error) {

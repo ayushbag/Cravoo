@@ -6,6 +6,8 @@ const UserLogin = () => {
     return (
         <AuthLayout>
             <AuthCard
+                role="user"
+                type="login"
                 cardTitle={authContent.user.login.title}
                 cardDescription={authContent.user.login.desc}
             />

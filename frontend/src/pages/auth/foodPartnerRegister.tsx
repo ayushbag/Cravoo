@@ -6,6 +6,8 @@ const FoodPartnerRegister = () => {
     return (
         <AuthLayout>
             <AuthCard
+                role="food-partner"
+                type="register"
                 cardTitle={authContent.foodPartner.register.title}
                 cardDescription={authContent.foodPartner.register.desc}
             />
