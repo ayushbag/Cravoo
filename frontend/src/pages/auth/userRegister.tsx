@@ -3,20 +3,19 @@ import AuthCard from "../../components/authCard"
 import { authContent } from "../../constants/authContent"
 import AuthLayout from "../../layouts/authLayout"
 import axiosInstance from "../../services/axios"
+import { useNavigate } from "react-router-dom"
 
 const UserRegister = () => {
+    
+    const navigate = useNavigate();
 
     const handleSubmit = async (data: Record<string, FormDataEntryValue>) => {
         try {
-            await axiosInstance.post("/user/register", data);
-            console.log("register success!");
-            // Todo: redirect to dashboard, toast
-            toast.error("register success!")
+            const res = await axiosInstance.post("/auth/user/register", data);
+            toast.error( res.data.message || "register success!")
+            navigate("/");
         } catch (err : any) {
-            console.error("register error: ", err.response?.data || err.message);
-            console.log(err)
-            // Todo: toast error
-            toast.error(err.response?.error || err.message);
+            toast.error(err.response?.data.errors || err.response?.data.message || err.message);
         }   
     }
 

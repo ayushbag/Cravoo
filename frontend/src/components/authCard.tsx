@@ -6,24 +6,58 @@ import GoogleIcon from "./icons/GoogleIcon"
 import { Link } from "react-router-dom"
 import type { FormEvent } from "react"
 
+type AuthData = {
+    name?: string;
+    fullName?: string;
+    firstName?: string;
+    lastName?: string;
+    contactName?: string;
+    phone?: string;
+    email: string;
+    password: string;
+    address?: string;
+};
+
 const AuthCard = ({ cardTitle, cardDescription, type, role, onSubmit }: {
     cardTitle: string;
     cardDescription: string;
     type: "register" | "login";
     role: "food-partner" | "user";
-    onSubmit: (data: Record<string, FormDataEntryValue>) => void;
+    onSubmit: (data: AuthData) => void;
 }) => {
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
+
         const form = new FormData(e.currentTarget as HTMLFormElement);
-        const data = Object.fromEntries(form.entries());
-        if (data.firstName && data.lastName) {
-            data.name = `${data.firstName} ${data.lastName}`;
-            delete data.firstName;
-            delete data.lastName;
+
+        const data: AuthData = {
+            email: form.get("email") as string,
+            password: form.get("password") as string
+        };
+
+        // If it's user register, add full name
+        if (role === "user" && type === "register") {
+            const firstName = form.get("firstName") as string;
+            const lastName = form.get("lastName") as string;
+            if (firstName && lastName) {
+                data.fullName = `${firstName} ${lastName}`;
+            }
         }
-        onSubmit(data)
+
+        // If it's food-partner register, add business info
+        if (role === "food-partner" && type === "register") {
+            const name = form.get("name") as string;
+            const address = form.get("address") as string;
+            const phone = form.get("phone") as string;
+            const contactName = form.get("contactName") as string;
+            if (name) data.name = name;
+            if (address) data.address = address;
+            if (phone) data.phone = phone;
+            if (contactName) data.contactName = contactName;
+        }
+
+        onSubmit(data);
     }
 
     return (
@@ -54,10 +88,10 @@ const AuthCard = ({ cardTitle, cardDescription, type, role, onSubmit }: {
                                 <div className="grid gap-1.5 text-xs">
                                     <div className="flex gap-2">
                                         <div className="flex flex-col gap-1.5">
-                                            <Label htmlFor="email">{role == "user" ? "First Name" : "Contact Name"}</Label>
+                                            <Label>{role == "user" ? "First Name" : "Contact Name"}</Label>
                                             <Input
-                                                id={role == "user" ? "firstName" : "contact"}
-                                                name={role == "user" ? "firstName" : "contact"}
+                                                id={role == "user" ? "firstName" : "contactName"}
+                                                name={role == "user" ? "firstName" : "contactName"}
                                                 type="text"
                                                 placeholder="John"
                                                 required
