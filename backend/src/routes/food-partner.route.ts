@@ -5,4 +5,4 @@ import { getFoodPartnerById } from "../controller/food-partner.controller.js"
 export const foodPartnerRouter = Router()
 
 /* GET /api/food-provider/:profile [protected] */
-foodPartnerRouter.get("/:id", authUserMiddleware, getFoodPartnerById)
+foodPartnerRouter.get("/:id", getFoodPartnerById)

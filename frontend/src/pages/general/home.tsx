@@ -19,7 +19,6 @@ const Home = () => {
       } catch (err: any) {
         toast.error(err.response.data?.errors || err.response.data?.message || "Something went wrong");
         if (err.response.data?.errors || err.response.data?.message) {
-          navigate("/user/login")
           toast.error("Login to proceed")
         }
       } finally {

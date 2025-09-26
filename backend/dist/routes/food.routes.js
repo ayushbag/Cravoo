@@ -10,6 +10,6 @@ const upload = multer({
 });
 /* POST /api/food [protected] */
 foodRouter.post("/", authFoodPartnerMiddleware, upload.single("video"), createFood);
-/* GET /api/food [protected] */
-foodRouter.get("/", authUserMiddleware, getFoodItems);
+/* GET /api/food */
+foodRouter.get("/", getFoodItems);
 //# sourceMappingURL=food.routes.js.map
