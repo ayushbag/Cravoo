@@ -1,0 +1,18 @@
+import { model, Schema, Types } from "mongoose";
+
+const saveSchema = new Schema({
+    user: {
+        type: Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    food: {
+        type: Types.ObjectId,
+        ref: 'Food',
+        required: true
+    }
+},{
+    timestamps: true
+})
+
+export const saveModel = model('Save', saveSchema);

@@ -1,61 +1,9 @@
 import { Schema, Types } from "mongoose";
-export declare const foodSchema: Schema<any, import("mongoose").Model<any, any, any, any, any, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, {
-    name: string;
-    video: string;
-    likeCount: number;
-    saveCount: number;
-    description?: string | null;
-    foodPartner?: {
-        prototype?: Types.ObjectId | null;
-        cacheHexString?: unknown;
-        generate?: {} | null;
-        createFromTime?: {} | null;
-        createFromHexString?: {} | null;
-        createFromBase64?: {} | null;
-        isValid?: {} | null;
-    } | null;
-}, import("mongoose").Document<unknown, {}, import("mongoose").FlatRecord<{
-    name: string;
-    video: string;
-    likeCount: number;
-    saveCount: number;
-    description?: string | null;
-    foodPartner?: {
-        prototype?: Types.ObjectId | null;
-        cacheHexString?: unknown;
-        generate?: {} | null;
-        createFromTime?: {} | null;
-        createFromHexString?: {} | null;
-        createFromBase64?: {} | null;
-        isValid?: {} | null;
-    } | null;
-}>, {}, import("mongoose").ResolveSchemaOptions<import("mongoose").DefaultSchemaOptions>> & import("mongoose").FlatRecord<{
-    name: string;
-    video: string;
-    likeCount: number;
-    saveCount: number;
-    description?: string | null;
-    foodPartner?: {
-        prototype?: Types.ObjectId | null;
-        cacheHexString?: unknown;
-        generate?: {} | null;
-        createFromTime?: {} | null;
-        createFromHexString?: {} | null;
-        createFromBase64?: {} | null;
-        isValid?: {} | null;
-    } | null;
-}> & {
-    _id: Types.ObjectId;
+export declare const saveModel: import("mongoose").Model<{
+    createdAt: NativeDate;
+    updatedAt: NativeDate;
 } & {
-    __v: number;
-}>;
-export declare const foodModel: import("mongoose").Model<{
-    name: string;
-    video: string;
-    likeCount: number;
-    saveCount: number;
-    description?: string | null;
-    foodPartner?: {
+    user: {
         prototype?: Types.ObjectId | null;
         cacheHexString?: unknown;
         generate?: {} | null;
@@ -63,14 +11,21 @@ export declare const foodModel: import("mongoose").Model<{
         createFromHexString?: {} | null;
         createFromBase64?: {} | null;
         isValid?: {} | null;
-    } | null;
+    };
+    food: {
+        prototype?: Types.ObjectId | null;
+        cacheHexString?: unknown;
+        generate?: {} | null;
+        createFromTime?: {} | null;
+        createFromHexString?: {} | null;
+        createFromBase64?: {} | null;
+        isValid?: {} | null;
+    };
 }, {}, {}, {}, import("mongoose").Document<unknown, {}, {
-    name: string;
-    video: string;
-    likeCount: number;
-    saveCount: number;
-    description?: string | null;
-    foodPartner?: {
+    createdAt: NativeDate;
+    updatedAt: NativeDate;
+} & {
+    user: {
         prototype?: Types.ObjectId | null;
         cacheHexString?: unknown;
         generate?: {} | null;
@@ -78,14 +33,8 @@ export declare const foodModel: import("mongoose").Model<{
         createFromHexString?: {} | null;
         createFromBase64?: {} | null;
         isValid?: {} | null;
-    } | null;
-}, {}, import("mongoose").DefaultSchemaOptions> & {
-    name: string;
-    video: string;
-    likeCount: number;
-    saveCount: number;
-    description?: string | null;
-    foodPartner?: {
+    };
+    food: {
         prototype?: Types.ObjectId | null;
         cacheHexString?: unknown;
         generate?: {} | null;
@@ -93,18 +42,42 @@ export declare const foodModel: import("mongoose").Model<{
         createFromHexString?: {} | null;
         createFromBase64?: {} | null;
         isValid?: {} | null;
-    } | null;
+    };
+}, {}, {
+    timestamps: true;
+}> & {
+    createdAt: NativeDate;
+    updatedAt: NativeDate;
+} & {
+    user: {
+        prototype?: Types.ObjectId | null;
+        cacheHexString?: unknown;
+        generate?: {} | null;
+        createFromTime?: {} | null;
+        createFromHexString?: {} | null;
+        createFromBase64?: {} | null;
+        isValid?: {} | null;
+    };
+    food: {
+        prototype?: Types.ObjectId | null;
+        cacheHexString?: unknown;
+        generate?: {} | null;
+        createFromTime?: {} | null;
+        createFromHexString?: {} | null;
+        createFromBase64?: {} | null;
+        isValid?: {} | null;
+    };
 } & {
     _id: Types.ObjectId;
 } & {
     __v: number;
-}, Schema<any, import("mongoose").Model<any, any, any, any, any, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, {
-    name: string;
-    video: string;
-    likeCount: number;
-    saveCount: number;
-    description?: string | null;
-    foodPartner?: {
+}, Schema<any, import("mongoose").Model<any, any, any, any, any, any>, {}, {}, {}, {}, {
+    timestamps: true;
+}, {
+    createdAt: NativeDate;
+    updatedAt: NativeDate;
+} & {
+    user: {
         prototype?: Types.ObjectId | null;
         cacheHexString?: unknown;
         generate?: {} | null;
@@ -112,14 +85,21 @@ export declare const foodModel: import("mongoose").Model<{
         createFromHexString?: {} | null;
         createFromBase64?: {} | null;
         isValid?: {} | null;
-    } | null;
+    };
+    food: {
+        prototype?: Types.ObjectId | null;
+        cacheHexString?: unknown;
+        generate?: {} | null;
+        createFromTime?: {} | null;
+        createFromHexString?: {} | null;
+        createFromBase64?: {} | null;
+        isValid?: {} | null;
+    };
 }, import("mongoose").Document<unknown, {}, import("mongoose").FlatRecord<{
-    name: string;
-    video: string;
-    likeCount: number;
-    saveCount: number;
-    description?: string | null;
-    foodPartner?: {
+    createdAt: NativeDate;
+    updatedAt: NativeDate;
+} & {
+    user: {
         prototype?: Types.ObjectId | null;
         cacheHexString?: unknown;
         generate?: {} | null;
@@ -127,14 +107,8 @@ export declare const foodModel: import("mongoose").Model<{
         createFromHexString?: {} | null;
         createFromBase64?: {} | null;
         isValid?: {} | null;
-    } | null;
-}>, {}, import("mongoose").ResolveSchemaOptions<import("mongoose").DefaultSchemaOptions>> & import("mongoose").FlatRecord<{
-    name: string;
-    video: string;
-    likeCount: number;
-    saveCount: number;
-    description?: string | null;
-    foodPartner?: {
+    };
+    food: {
         prototype?: Types.ObjectId | null;
         cacheHexString?: unknown;
         generate?: {} | null;
@@ -142,10 +116,34 @@ export declare const foodModel: import("mongoose").Model<{
         createFromHexString?: {} | null;
         createFromBase64?: {} | null;
         isValid?: {} | null;
-    } | null;
+    };
+}>, {}, import("mongoose").ResolveSchemaOptions<{
+    timestamps: true;
+}>> & import("mongoose").FlatRecord<{
+    createdAt: NativeDate;
+    updatedAt: NativeDate;
+} & {
+    user: {
+        prototype?: Types.ObjectId | null;
+        cacheHexString?: unknown;
+        generate?: {} | null;
+        createFromTime?: {} | null;
+        createFromHexString?: {} | null;
+        createFromBase64?: {} | null;
+        isValid?: {} | null;
+    };
+    food: {
+        prototype?: Types.ObjectId | null;
+        cacheHexString?: unknown;
+        generate?: {} | null;
+        createFromTime?: {} | null;
+        createFromHexString?: {} | null;
+        createFromBase64?: {} | null;
+        isValid?: {} | null;
+    };
 }> & {
     _id: Types.ObjectId;
 } & {
     __v: number;
 }>>;
-//# sourceMappingURL=food.model.d.ts.map
+//# sourceMappingURL=save.model.d.ts.map

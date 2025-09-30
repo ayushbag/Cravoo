@@ -14,6 +14,14 @@ export const foodSchema = new Schema({
     foodPartner: {
         type: Types.ObjectId,
         ref: "FoodPartner"
+    },
+    likeCount: {
+        type: Number,
+        default: 0
+    },
+    saveCount: {
+        type: Number,
+        default: 0
     }
 });
 export const foodModel = model('Food', foodSchema);
