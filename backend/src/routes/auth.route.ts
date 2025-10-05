@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { loginFoodPartner, loginUser, logoutFoodPartner, logoutUser, registerFoodPartner, registerUser } from "../controller/auth.controller.js";
+import { getCurrentUser, loginFoodPartner, loginUser, logoutFoodPartner, logoutUser, registerFoodPartner, registerUser } from "../controller/auth.controller.js";
+import { verifyAuth } from "../middlewares/auth.middleware.js";
 
 export const authRouter = Router();
 
@@ -13,3 +14,5 @@ authRouter.post("/food-partner/register", registerFoodPartner);
 authRouter.post("/food-partner/login", loginFoodPartner);
 authRouter.get("/food-partner/logout", logoutFoodPartner);
 
+// verify session from backend route
+authRouter.get("/me", verifyAuth, getCurrentUser)

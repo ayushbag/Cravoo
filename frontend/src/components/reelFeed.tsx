@@ -63,7 +63,7 @@ const ReelFeed: React.FC<ReelFeedProps> = ({
   }
 
   return (
-    <div className="max-w-[341px] mx-auto h-screen bg-background overflow-y-scroll scrollbar-none snap-y snap-mandatory pb-12">
+    <div className="max-w-[56vh] mx-auto h-screen bg-background overflow-y-scroll scrollbar-none snap-y snap-mandatory pb-12">
       <div className="flex flex-col items-center">
         {items.length === 0 && (
           <div className="flex h-screen items-center justify-center text-muted-foreground text-lg">
@@ -72,15 +72,15 @@ const ReelFeed: React.FC<ReelFeedProps> = ({
         )}
 
         <div>
-          {items.map((item) => (
+          {items.map((item, index) => (
             <section
-              key={item._id}
-              className="relative w-full h-screen snap-start flex items-center justify-center bg-background"
+              key={index}
+              className="relative w-full snap-start flex items-center justify-center bg-background"
             >
               {/* Video */}
               <video
                 ref={setVideoRef(item._id)}
-                className="w-full h-full object-contain bg-background"
+                className="w-full h-screen object-fill bg-background"
                 src={item.video}
                 muted
                 playsInline
@@ -90,7 +90,9 @@ const ReelFeed: React.FC<ReelFeedProps> = ({
 
               {/* Overlay */}
               <div className="absolute inset-0 flex flex-col justify-end">
-                <div className="relative flex justify-between items-end w-full p-4 pb-12">
+                <div className="relative flex justify-between items-end w-full p-5">
+                  <div className="absolute bottom-0 left-0 w-full h-30 bg-[]" />
+                  <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black/80 to-transparent z-10" />
                   <div className="text-white z-20 space-y-2 max-w-[70%]">
                     {item.description && (
                       <p className="text-sm line-clamp-2">{item.description}</p>
@@ -109,7 +111,7 @@ const ReelFeed: React.FC<ReelFeedProps> = ({
                   </div>
 
                   {/* Right side: actions */}
-                  <div className="flex flex-col space-y-4 items-center text-white mb-2">
+                  <div className="flex flex-col space-y-4 items-center text-white mb-2 z-20">
                     <TooltipProvider>
                       {/* Like */}
                       <div className="flex flex-col items-center">
@@ -207,14 +209,6 @@ const ReelFeed: React.FC<ReelFeedProps> = ({
                       </div>
                     </TooltipProvider>
                   </div>
-                </div>
-                <div className="flex justify-evenly items-center bg-muted w-full h-10 fixed bottom-0 left-0 right-0 z-10 max-w-[341px] mx-auto">
-                  <Link to="/">
-                    <Home size={20} />
-                  </Link>
-                  <Link to="/saved">
-                    <Bookmark size={20} />
-                  </Link>
                 </div>
               </div>
             </section>

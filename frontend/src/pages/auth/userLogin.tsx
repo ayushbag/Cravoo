@@ -7,15 +7,16 @@ import { useNavigate } from "react-router-dom"
 
 const UserLogin = () => {
 
-    const navigate = useNavigate();
+    const navigate = useNavigate()
 
     const handleSubmit = async (data: Record<string, FormDataEntryValue>) => {
         try {
             const res = await axiosInstance.post("/auth/user/login", data);
             toast.success(res.data.message || "User login success!");
-            navigate("/");
+            navigate("/")
         } catch (err: any) {
             toast.error(err.response?.data.errors || err.response?.data.message || err.message);
+            console.error(err)
         }
     }
 

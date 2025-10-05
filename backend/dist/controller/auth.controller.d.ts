@@ -31,5 +31,6 @@ export declare const logoutUser: (req: Request, res: Response) => void;
 export declare const registerFoodPartner: (req: Request<{}, {}, FoodPartnerRegister>, res: Response) => Promise<Response<any, Record<string, any>>>;
 export declare const loginFoodPartner: (req: Request<{}, {}, FoodPartnerLogin>, res: Response) => Promise<Response<any, Record<string, any>>>;
 export declare const logoutFoodPartner: (req: Request, res: Response) => Promise<void>;
+export declare const getCurrentUser: (req: Request, res: Response) => Promise<void>;
 export {};
 //# sourceMappingURL=auth.controller.d.ts.map

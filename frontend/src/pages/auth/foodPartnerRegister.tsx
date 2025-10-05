@@ -4,16 +4,19 @@ import { authContent } from "../../constants/authContent"
 import AuthLayout from "../../layouts/authLayout"
 import axiosInstance from "../../services/axios"
 import { useNavigate } from "react-router-dom"
+import { useAuth } from "../../context/authContext"
 
 const FoodPartnerRegister = () => {
 
+    const { refreshAuth } = useAuth()
     const navigate = useNavigate();
 
     const handleSubmit = async (data: Record<string, FormDataEntryValue>) => {
         try {
             const res = await axiosInstance.post("/auth/food-partner/register", data);
             toast.success(res.data.message || "Food partner registered success");
-            navigate("/create-food")
+            if(res.status == 201) refreshAuth()
+            navigate("/food-partner/dashboard")
         } catch (err: any) {
             toast.error(err.response?.data.errors || err.response?.data.message || err.message)
         }

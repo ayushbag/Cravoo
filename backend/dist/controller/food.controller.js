@@ -27,7 +27,7 @@ export const createFood = async (req, res) => {
             name: parsedBody.data.name,
             description: parsedBody.data.description,
             video: fileUploadResult.url,
-            foodPartner: req.foodPartner?._id,
+            foodPartner: req.user?._id,
         });
         return res.status(201).json({
             message: "Food created successfully",
@@ -48,10 +48,18 @@ export const createFood = async (req, res) => {
 };
 export const getFoodItems = async (req, res) => {
     try {
-        const foodItems = await foodModel.find({});
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 5;
+        const skip = (page - 1) * limit;
+        const foodItems = await foodModel.find()
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit);
+        const total = await foodModel.countDocuments();
         return res.status(200).json({
             message: "Food items fetched successfully",
             foodItems,
+            hasMore: skip + foodItems.length < total
         });
     }
     catch (error) {
@@ -66,7 +74,7 @@ export const likeFood = async (req, res) => {
         const { foodId } = req.body;
         const user = req.user;
         if (!user) {
-            return res.status(400).json({
+            return res.status(401).json({
                 message: "Unauthorized",
             });
         }

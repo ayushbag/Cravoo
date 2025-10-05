@@ -23,6 +23,10 @@ export const foodSchema = new Schema({
     saveCount: {
         type: Number,
         default: 0
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now()
     }
 })
 

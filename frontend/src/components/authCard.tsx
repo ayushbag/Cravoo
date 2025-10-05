@@ -69,6 +69,15 @@ const AuthCard = ({ cardTitle, cardDescription, type, role, onSubmit }: {
                         <CardDescription>
                             {cardDescription}
                         </CardDescription>
+                        <CardDescription>
+                            Switch • &nbsp;
+                            <Link to={`/user/${type}`} className="text-accent-foreground" replace>
+                                User
+                            </Link> • &nbsp;
+                            <Link to={`/food-partner/${type}`} className="text-accent-foreground" replace>
+                                Food Partner
+                            </Link>
+                        </CardDescription>
                     </CardHeader>
                     <CardContent>
                         <div className="flex flex-col gap-3 pt-4">
@@ -166,7 +175,7 @@ const AuthCard = ({ cardTitle, cardDescription, type, role, onSubmit }: {
                         <CardDescription className="pt-2">
                             {type == "login" ?
                                 <p>
-                                    Don’t have an account? <Link to={`/${role}/register`} className="text-accent-foreground underline">Register</Link>
+                                    Don have an account? <Link to={`/${role}/register`} className="text-accent-foreground underline">Register</Link>
                                 </p>
                                 :
                                 <p>
