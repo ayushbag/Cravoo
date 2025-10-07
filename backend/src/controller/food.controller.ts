@@ -59,6 +59,7 @@ export const getFoodItems = async (req: Request, res: Response) => {
   try {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 5;
+    const userId = req.user?.id
 
     const skip = (page - 1) * limit;
 
@@ -69,9 +70,30 @@ export const getFoodItems = async (req: Request, res: Response) => {
 
     const total = await foodModel.countDocuments()
 
+    const foodIds = foodItems.map((item) => item._id);
+
+    const likedItems = await likeModel.find({
+      user: userId,
+      food: { $in: foodIds }
+    }).select("food");
+
+    const savedItems = await saveModel.find({
+      user: userId,
+      food: { $in: foodIds }
+    }).select("food")
+
+    const likedIds = likedItems.map(item => item.food.toString());
+    const savedIds = savedItems.map(item => item.food.toString());
+
+    const enrichedFoodItems = foodItems.map((item) => ({
+      ...item.toObject(),
+      likedByCurrentUser: likedIds.includes(item._id.toString()),
+      savedByCurrentUser: savedIds.includes(item._id.toString())
+    }))
+
     return res.status(200).json({
       message: "Food items fetched successfully",
-      foodItems,
+      foodItems: enrichedFoodItems,
       hasMore: skip + foodItems.length < total
     });
   } catch (error) {
@@ -102,7 +124,7 @@ export const likeFood = async (
     });
 
     if (alreadyLiked) {
-      await likeModel.deleteOne({
+      const unlike = await likeModel.deleteOne({
         user: user._id,
         food: foodId,
       });
@@ -113,6 +135,7 @@ export const likeFood = async (
 
       return res.status(201).json({
         message: "Unliked!",
+        like: unlike
       });
     }
 
@@ -154,7 +177,7 @@ export const saveFood = async (req: Request<{},{},{ foodId: Types.ObjectId }>, r
     })
 
     if(alreadySaved) {
-      await saveModel.deleteOne({
+      const unsave = await saveModel.deleteOne({
         user: user._id,
         food: foodId
       })
@@ -164,7 +187,8 @@ export const saveFood = async (req: Request<{},{},{ foodId: Types.ObjectId }>, r
       })
 
       return res.status(201).json({
-        message: "Unsaved"
+        message: "Unsaved",
+        save: unsave
       })
     }
 
@@ -178,7 +202,8 @@ export const saveFood = async (req: Request<{},{},{ foodId: Types.ObjectId }>, r
     })
 
     return res.status(201).json({
-      message: "Saved"
+      message: "Saved",
+      save
     })
   } catch (err) {
     console.error(err)

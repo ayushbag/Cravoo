@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react"
 import { Link } from "react-router-dom"
 import { Button } from "../components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../components/ui/tooltip"
-import { Bookmark, Home, Save, SaveIcon } from "lucide-react"
+import { } from "lucide-react"
 
 export interface ReelItem {
   _id: string
@@ -17,6 +17,8 @@ export interface ReelItem {
   commentsCount?: number
   comments?: Array<any>
   foodPartner?: string
+  likedByCurrentUser?: boolean
+  savedByCurrentUser?: boolean
 }
 
 export interface ReelFeedProps {
@@ -134,8 +136,7 @@ const ReelFeed: React.FC<ReelFeedProps> = ({
                                   width="24"
                                   height="24"
                                   viewBox="0 0 24 24"
-                                  fill="currentColor"
-                                  stroke="currentColor"
+                                  fill={item.likedByCurrentUser ? "red" : "currentColor" }
                                   strokeWidth="2"
                                   strokeLinecap="round"
                                   strokeLinejoin="round"
@@ -165,8 +166,7 @@ const ReelFeed: React.FC<ReelFeedProps> = ({
                                   width="24"
                                   height="24"
                                   viewBox="0 0 24 24"
-                                  fill="currentColor"
-                                  stroke="currentColor"
+                                  fill={item.savedByCurrentUser ? "var(--color-primary)" : "currentColor" }
                                   strokeWidth="2"
                                   strokeLinecap="round"
                                   strokeLinejoin="round"

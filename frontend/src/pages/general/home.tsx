@@ -17,6 +17,8 @@ interface Video {
   commentsCount?: number;
   comments?: Array<any>;
   foodPartner?: string;
+  likedByCurrentUser?: boolean
+  savedByCurrentUser?: boolean
 }
 
 const Home = () => {
@@ -64,34 +66,63 @@ const Home = () => {
 
   const postLike = async (foodId: string) => {
     try {
-      const res = await axiosInstance.post("/food/like", {
-        foodId: foodId
-      })
-      // TODO: wrong
-      setVideos(videos.map((video) => video._id === foodId ? { ...video, likeCount: (video.likeCount == 0 ? 1 : 0) } : video))
-    } catch (err: any) {
-      toast.error(err.response.data?.errors || err.response.data?.message || "Something went wrong");
-    }
-  }
-
-  const postSave = async (foodId: string) => {
-    try {
-      const res = await axiosInstance.post("/food/save", {
-        foodId: foodId
-      })
-      // TODO: wrong
-      setVideos((prev) =>
-        prev.map((video) =>
+      // Optimised like update
+      setVideos((prevVideos) =>
+        prevVideos.map((video) =>
           video._id === foodId
-            ? { 
-                ...video, 
-                saveCount: typeof video.saveCount === "number"
-                  ? (video.saveCount === 0 ? 1 : 0)
-                  : 1
-              }
+            ? {
+              ...video,
+              likedByCurrentUser: !video.likedByCurrentUser,
+              likeCount: video.likedByCurrentUser
+                ? video.likeCount! - 1
+                : video.likeCount! + 1,
+            }
             : video
         )
       );
+
+      // Backend call
+      const res = await axiosInstance.post("/food/like", { foodId });
+
+      const updated = res.data;
+
+      // TODO: server confirmation
+
+      // setVideos((prevVideos) =>
+      //   prevVideos.map((video) =>
+      //     video._id === updated.like.food
+      //       ? { ...video, likeCount: updated.likeCount, likedByCurrentUser: updated.likedByCurrentUser }
+      //       : video
+      //   )
+      // );
+    } catch (err: any) {
+      toast.error(
+        err.response?.data?.errors || err.response?.data?.message || "Something went wrong"
+      );
+    }
+  };
+
+
+  const postSave = async (foodId: string) => {
+    try {
+      setVideos((prevVideos) =>
+        prevVideos.map((video) =>
+          video._id === foodId
+            ? {
+              ...video,
+              savedByCurrentUser: !video.savedByCurrentUser,
+              saveCount: video.savedByCurrentUser
+                ? video.saveCount! - 1
+                : video.saveCount! + 1
+            }
+            : video
+        )
+      )
+      const res = await axiosInstance.post("/food/save", {
+        foodId: foodId
+      })
+
+      // TODO: update from server
     }
     catch (err: any) {
       toast.error(err.response.data?.errors || err.response.data?.message || "Something went wrong");
@@ -107,7 +138,7 @@ const Home = () => {
         emptyMessage="No videos available."
         sentinel={lastVideoRef}
       />
-      {/* Loader + Infinite Scroll Trigger */}
+      {/* Loader*/}
       {loading && <p className="text-center text-gray-500">Loading more reels...</p>}
     </Layout>
   );

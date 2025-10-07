@@ -1,10 +1,10 @@
 import { Schema, Types } from "mongoose";
 export declare const foodSchema: Schema<any, import("mongoose").Model<any, any, any, any, any, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, {
     name: string;
-    createdAt: NativeDate;
     video: string;
     likeCount: number;
     saveCount: number;
+    createdAt: NativeDate;
     description?: string | null;
     foodPartner?: {
         prototype?: Types.ObjectId | null;
@@ -17,10 +17,10 @@ export declare const foodSchema: Schema<any, import("mongoose").Model<any, any, 
     } | null;
 }, import("mongoose").Document<unknown, {}, import("mongoose").FlatRecord<{
     name: string;
-    createdAt: NativeDate;
     video: string;
     likeCount: number;
     saveCount: number;
+    createdAt: NativeDate;
     description?: string | null;
     foodPartner?: {
         prototype?: Types.ObjectId | null;
@@ -33,10 +33,10 @@ export declare const foodSchema: Schema<any, import("mongoose").Model<any, any, 
     } | null;
 }>, {}, import("mongoose").ResolveSchemaOptions<import("mongoose").DefaultSchemaOptions>> & import("mongoose").FlatRecord<{
     name: string;
-    createdAt: NativeDate;
     video: string;
     likeCount: number;
     saveCount: number;
+    createdAt: NativeDate;
     description?: string | null;
     foodPartner?: {
         prototype?: Types.ObjectId | null;
@@ -54,10 +54,10 @@ export declare const foodSchema: Schema<any, import("mongoose").Model<any, any, 
 }>;
 export declare const foodModel: import("mongoose").Model<{
     name: string;
-    createdAt: NativeDate;
     video: string;
     likeCount: number;
     saveCount: number;
+    createdAt: NativeDate;
     description?: string | null;
     foodPartner?: {
         prototype?: Types.ObjectId | null;
@@ -70,10 +70,10 @@ export declare const foodModel: import("mongoose").Model<{
     } | null;
 }, {}, {}, {}, import("mongoose").Document<unknown, {}, {
     name: string;
-    createdAt: NativeDate;
     video: string;
     likeCount: number;
     saveCount: number;
+    createdAt: NativeDate;
     description?: string | null;
     foodPartner?: {
         prototype?: Types.ObjectId | null;
@@ -86,10 +86,10 @@ export declare const foodModel: import("mongoose").Model<{
     } | null;
 }, {}, import("mongoose").DefaultSchemaOptions> & {
     name: string;
-    createdAt: NativeDate;
     video: string;
     likeCount: number;
     saveCount: number;
+    createdAt: NativeDate;
     description?: string | null;
     foodPartner?: {
         prototype?: Types.ObjectId | null;
@@ -106,10 +106,10 @@ export declare const foodModel: import("mongoose").Model<{
     __v: number;
 }, Schema<any, import("mongoose").Model<any, any, any, any, any, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, {
     name: string;
-    createdAt: NativeDate;
     video: string;
     likeCount: number;
     saveCount: number;
+    createdAt: NativeDate;
     description?: string | null;
     foodPartner?: {
         prototype?: Types.ObjectId | null;
@@ -122,10 +122,10 @@ export declare const foodModel: import("mongoose").Model<{
     } | null;
 }, import("mongoose").Document<unknown, {}, import("mongoose").FlatRecord<{
     name: string;
-    createdAt: NativeDate;
     video: string;
     likeCount: number;
     saveCount: number;
+    createdAt: NativeDate;
     description?: string | null;
     foodPartner?: {
         prototype?: Types.ObjectId | null;
@@ -138,10 +138,10 @@ export declare const foodModel: import("mongoose").Model<{
     } | null;
 }>, {}, import("mongoose").ResolveSchemaOptions<import("mongoose").DefaultSchemaOptions>> & import("mongoose").FlatRecord<{
     name: string;
-    createdAt: NativeDate;
     video: string;
     likeCount: number;
     saveCount: number;
+    createdAt: NativeDate;
     description?: string | null;
     foodPartner?: {
         prototype?: Types.ObjectId | null;

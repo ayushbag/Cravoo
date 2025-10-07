@@ -50,15 +50,32 @@ export const getFoodItems = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 5;
+        const userId = req.user?.id;
         const skip = (page - 1) * limit;
         const foodItems = await foodModel.find()
             .sort({ createdAt: -1 })
             .skip(skip)
             .limit(limit);
         const total = await foodModel.countDocuments();
+        const foodIds = foodItems.map((item) => item._id);
+        const likedItems = await likeModel.find({
+            user: userId,
+            food: { $in: foodIds }
+        }).select("food");
+        const savedItems = await saveModel.find({
+            user: userId,
+            food: { $in: foodIds }
+        }).select("food");
+        const likedIds = likedItems.map(item => item.food.toString());
+        const savedIds = savedItems.map(item => item.food.toString());
+        const enrichedFoodItems = foodItems.map((item) => ({
+            ...item.toObject(),
+            likedByCurrentUser: likedIds.includes(item._id.toString()),
+            savedByCurrentUser: savedIds.includes(item._id.toString())
+        }));
         return res.status(200).json({
             message: "Food items fetched successfully",
-            foodItems,
+            foodItems: enrichedFoodItems,
             hasMore: skip + foodItems.length < total
         });
     }
@@ -83,7 +100,7 @@ export const likeFood = async (req, res) => {
             food: foodId,
         });
         if (alreadyLiked) {
-            await likeModel.deleteOne({
+            const unlike = await likeModel.deleteOne({
                 user: user._id,
                 food: foodId,
             });
@@ -92,6 +109,7 @@ export const likeFood = async (req, res) => {
             });
             return res.status(201).json({
                 message: "Unliked!",
+                like: unlike
             });
         }
         const like = await likeModel.create({
@@ -127,7 +145,7 @@ export const saveFood = async (req, res) => {
             food: foodId
         });
         if (alreadySaved) {
-            await saveModel.deleteOne({
+            const unsave = await saveModel.deleteOne({
                 user: user._id,
                 food: foodId
             });
@@ -135,7 +153,8 @@ export const saveFood = async (req, res) => {
                 $inc: { saveCount: -1 }
             });
             return res.status(201).json({
-                message: "Unsaved"
+                message: "Unsaved",
+                save: unsave
             });
         }
         const save = await saveModel.create({
@@ -146,7 +165,8 @@ export const saveFood = async (req, res) => {
             $inc: { saveCount: 1 }
         });
         return res.status(201).json({
-            message: "Saved"
+            message: "Saved",
+            save
         });
     }
     catch (err) {
