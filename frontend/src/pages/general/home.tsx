@@ -67,6 +67,7 @@ const Home = () => {
       const res = await axiosInstance.post("/food/like", {
         foodId: foodId
       })
+      // TODO: wrong
       setVideos(videos.map((video) => video._id === foodId ? { ...video, likeCount: (video.likeCount == 0 ? 1 : 0) } : video))
     } catch (err: any) {
       toast.error(err.response.data?.errors || err.response.data?.message || "Something went wrong");
@@ -78,11 +79,16 @@ const Home = () => {
       const res = await axiosInstance.post("/food/save", {
         foodId: foodId
       })
-      console.log(res.data.message);
+      // TODO: wrong
       setVideos((prev) =>
         prev.map((video) =>
           video._id === foodId
-            ? { ...video, saveCount: (video.saveCount || 0) + (res.data.saved ? 1 : -1) }
+            ? { 
+                ...video, 
+                saveCount: typeof video.saveCount === "number"
+                  ? (video.saveCount === 0 ? 1 : 0)
+                  : 1
+              }
             : video
         )
       );
@@ -99,10 +105,10 @@ const Home = () => {
         onLike={(item) => postLike(item._id)}
         onSave={(item) => postSave(item._id)}
         emptyMessage="No videos available."
+        sentinel={lastVideoRef}
       />
       {/* Loader + Infinite Scroll Trigger */}
       {loading && <p className="text-center text-gray-500">Loading more reels...</p>}
-      <div ref={lastVideoRef} style={{ height: "1px" }} />
     </Layout>
   );
 };

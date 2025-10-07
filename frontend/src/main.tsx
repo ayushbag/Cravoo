@@ -6,11 +6,11 @@ import { ThemeProvider } from './components/themeProvider.tsx'
 import { AuthProvider } from './context/authContext.tsx'
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
+  // <StrictMode>
     <ThemeProvider defaultTheme='system' storageKey='vite-ui-theme'>
       <AuthProvider>
         <App />
       </AuthProvider>
     </ThemeProvider>
-  </StrictMode>,
+  // </StrictMode>,
 )
